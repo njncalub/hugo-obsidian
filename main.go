@@ -71,10 +71,11 @@ func main() {
 	out := flag.String("output", ".", "Output Directory")
 	root := flag.String("root", "..", "Root Directory (for config parsing)")
 	index := flag.Bool("index", false, "Whether to index the content")
+	useDefaultTitle := flag.Bool("useDefaultTitle", false, "Whether to use a default title")
 	flag.Parse()
 
 	ignoreBlobs := getIgnoredFiles(*root)
-	l, i := walk(*in, ".md", *index, ignoreBlobs)
+	l, i := walk(*in, ".md", *index, *useDefaultTitle, ignoreBlobs)
 	f := filter(l)
 	err := write(f, i, *index, *out, *root)
 	if err != nil {

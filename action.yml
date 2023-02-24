@@ -12,6 +12,10 @@ inputs:
     default: "false"
     description: "Index content"
     required: false
+  useDefaultTitle:
+    default: "false"
+    description: "Use Default Title"
+    required: false
   root:
     default: "."
     description: "Root of Repository"
@@ -27,4 +31,5 @@ runs:
   - "-input=${{ inputs.input }}"
   - "-output=${{ inputs.output }}"
   - "-index=${{ inputs.index }}"
+  - "-useDefaultTitle=${{ inputs.useDefaultTitle }}"
   - "-root=${{ inputs.root }}"

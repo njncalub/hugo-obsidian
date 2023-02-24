@@ -19,7 +19,7 @@ type Front struct {
 }
 
 // recursively walk directory and return all files with given extension
-func walk(root, ext string, index bool, ignorePaths map[string]struct{}) (res []Link, i ContentIndex) {
+func walk(root, ext string, index, useDefaultTitle bool, ignorePaths map[string]struct{}) (res []Link, i ContentIndex) {
 	fmt.Printf("Scraping %s\n", root)
 	i = make(ContentIndex)
 
@@ -60,10 +60,16 @@ func walk(root, ext string, index bool, ignorePaths map[string]struct{}) (res []
 					info, _ := os.Stat(s)
 					source := processSource(trim(s, root, ".md"))
 
+					title := matter.Title
+					if title == "" && useDefaultTitle == true {
+						fileName := d.Name()
+						title = strings.TrimSuffix(filepath.Base(fileName), filepath.Ext(fileName))
+					}
+
 					// add to content and link index
 					i[source] = Content{
 						LastModified: info.ModTime(),
-						Title:        matter.Title,
+						Title:        title,
 						Content:      body,
 					}
 					res = append(res, parse(s, root)...)
